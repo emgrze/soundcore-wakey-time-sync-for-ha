@@ -1,77 +1,84 @@
 # Soundcore Wakey for Home Assistant
 
-Synchronizacja czasu na **Anker Soundcore Wakey (A3300)** przez BLE z hosta Home Assistant — bez telefonu i bez oficjalnej aplikacji.
+Sync the clock on an **Anker Soundcore Wakey (A3300)** over BLE from the Home Assistant host — no phone and no official app required.
 
-Po instalacji pojawia się przycisk **Sync time** oraz usługa `soundcore_wakey.sync_time`.
+After install you get a **Sync time** button and the `soundcore_wakey.sync_time` service.
 
-## Wymagania
+## Requirements
 
-- Home Assistant z działającą integracją **Bluetooth** (adapter BLE na serwerze HA)
-- Soundcore Wakey w zasięgu radia BLE
-- Apka Soundcore **nie** powinna trzymać aktywnego połączenia BLE z radiem w momencie syncu
+- Home Assistant **2026.11+** with a working **Bluetooth** integration (BLE adapter on the HA host)
+- Soundcore Wakey within BLE range
+- The Soundcore app should **not** hold an active BLE connection to the radio while syncing
 
-## Instalacja przez HACS
+## Install via Marketplace
 
-1. HACS → **Integrations** → menu (⋮) → **Custom repositories**
-2. Repository URL: `https://github.com/TWOJ_USER/soundcore-wakey`
-3. Category: **Integration**
-4. Add → wyszukaj **Soundcore Wakey** → Download
-5. **Restart** Home Assistant
-6. **Ustawienia → Urządzenia i usługi → Dodaj integrację → Soundcore Wakey**
-7. Podaj adres BLE (np. `D3:B1:EE:26:14:B3`) i flagę `1`
+Home Assistant 2026.11+ includes the community store as **Settings → Marketplace** (formerly HACS).
 
-## Instalacja ręczna
+1. **Settings → Marketplace**
+2. **Add from link** → paste the GitHub repo URL, e.g.  
+   `https://github.com/emgrze/soundcore-wakey-time-sync-for-ha`
+3. Confirm category **Integration** (if asked)
+4. **Install**
+5. Complete the setup flow (BLE address, e.g. `AA:BB:CC:DD:EE:FF`, flag `1`)
 
-Skopiuj katalog `custom_components/soundcore_wakey` do `/config/custom_components/`, zrestartuj HA, dodaj integrację z UI.
+Custom repositories need a one-time GitHub device sign-in in Marketplace. Browsing the default catalog does not.
 
-## Użycie
+On a first install, HA often opens the integration setup immediately (no separate restart). Updates may still require a restart.
 
-| Akcja | Jak |
+## Manual install
+
+Copy `custom_components/soundcore_wakey` into `/config/custom_components/`, restart HA, then:
+
+**Settings → Devices & services → Add integration → Soundcore Wakey**
+
+## Usage
+
+| Action | How |
 |--------|-----|
-| Ręczny sync | Przycisk **Sync time** na urządzeniu |
-| Usługa | `soundcore_wakey.sync_time` |
-| Codziennie | Automation: trigger `time` → `button.press` / `soundcore_wakey.sync_time` |
+| Manual sync | **Sync time** button on the device |
+| Service | `soundcore_wakey.sync_time` |
+| Daily | Automation: `time` trigger → `button.press` / `soundcore_wakey.sync_time` |
 
-Czas wysyłany to **lokalny wall-clock** hosta HA (strefa z HA).
+The time sent is the HA host **local wall-clock** (HA timezone).
 
-## Flaga wyświetlacza
+## Display flag
 
-| Wartość | Efekt |
-|---------|--------|
-| `0` | 12h (AM/PM) |
-| `1` | **24h + sun/moon** (zalecane) |
-| `24` (`0x18`) | 24h bez ikony |
+| Value | Effect |
+|-------|--------|
+| `0` | 12-hour (AM/PM) |
+| `1` | **24-hour + sun/moon** (recommended) |
+| `24` (`0x18`) | 24-hour without icon |
 
-Ikona sun/moon (przy fladze `1`) jest ustawiana przez firmware:
+With flag `1`, the sun/moon icon is chosen by firmware:
 
-- **słońce** 06:00–21:59  
-- **księżyc** 22:00–05:59  
+- **sun** 06:00–21:59  
+- **moon** 22:00–05:59  
 
-## Protokół (skrót)
+## Protocol (summary)
 
-- Write GATT: `00007777-0000-1000-8000-00805f9b34fb`
-- Pakiet czasu (cmd `0x8101`):  
+- Write GATT characteristic: `00007777-0000-1000-8000-00805f9b34fb`
+- Time packet (cmd `0x8101`):  
   `08 ee 00 00 00 01 81 10 00` + `YY MM DD HH MM SS FLAG`  
   (`YY = year − 2000`)
 
-Oparte na reverse-engineerze projektu [mthnmhn/wakeysync](https://github.com/mthnmhn/wakeysync) (aplikacja macOS).
+Based on reverse engineering of [mthnmhn/wakeysync](https://github.com/mthnmhn/wakeysync) (macOS app).
 
-## Znajdowanie adresu BLE
+## Finding the BLE address
 
-Na Linuxie (host z BlueZ):
+On Linux (host with BlueZ):
 
 ```bash
-python3 wakey_sync_time.py --scan-only
+python3 tools/wakey_sync_time.py --scan-only
 ```
 
-albo `bluetoothctl scan on` i szukaj urządzenia w pobliżu / manufacturer data.
+Or use `bluetoothctl scan on` and look for nearby devices / manufacturer data.
 
 ## Troubleshooting
 
-- **Connect failed** — zasięg, `bluetoothctl power on`, odłącz telefon od Wakeya  
-- **Brak zmiany na wyświetlaczu** — flaga `1`, sprawdź logi HA (`soundcore_wakey`)  
-- **HAOS** — adapter Bluetooth musi być widoczny dla Core (integracja Bluetooth w HA działa)
+- **Connect failed** — check range, `bluetoothctl power on`, disconnect the phone from the Wakey  
+- **Display does not change** — use flag `1`, check HA logs (`soundcore_wakey`)  
+- **HAOS / Bluetooth** — the adapter must be visible to Core (Bluetooth integration works)
 
-## Licencja
+## License
 
 MIT
