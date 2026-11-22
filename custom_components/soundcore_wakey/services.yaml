@@ -1,0 +1,16 @@
+sync_time:
+  name: Sync time
+  description: Wyślij aktualny czas lokalny HA na Soundcore Wakey (BLE).
+  fields:
+    entry_id:
+      name: Config entry ID
+      description: Opcjonalne, gdy masz kilka urządzeń.
+      example: "01ABCDEF..."
+      selector:
+        text:
+    address:
+      name: BLE address
+      description: Opcjonalny adres MAC zamiast entry_id.
+      example: "D3:B1:EE:26:14:B3"
+      selector:
+        text:
