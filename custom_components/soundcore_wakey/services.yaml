@@ -11,6 +11,6 @@ sync_time:
     address:
       name: BLE address
       description: Opcjonalny adres MAC zamiast entry_id.
-      example: "D3:B1:EE:26:14:B3"
+      example: "AA:BB:CC:DD:EE:FF"
       selector:
         text:

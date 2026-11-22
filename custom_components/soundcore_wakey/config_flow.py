@@ -57,7 +57,7 @@ class SoundcoreWakeyConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         schema = vol.Schema(
             {
-                vol.Required(CONF_ADDRESS, default="D3:B1:EE:26:14:B3"): str,
+                vol.Required(CONF_ADDRESS, default="AA:BB:CC:DD:EE:FF"): str,
                 vol.Optional(CONF_NAME, default=DEFAULT_NAME): str,
                 vol.Optional(CONF_FLAG, default=DEFAULT_FLAG): selector.NumberSelector(
                     selector.NumberSelectorConfig(

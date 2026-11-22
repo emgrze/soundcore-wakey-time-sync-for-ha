@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Soundcore Wakey",
-        "description": "Podaj adres BLE z reklamy (np. D3:B1:EE:26:14:B3). Flaga 1 = 24h + ikona sun/moon.",
+        "description": "Podaj adres BLE z reklamy (np. AA:BB:CC:DD:EE:FF). Flaga 1 = 24h + ikona sun/moon.",
         "data": {
           "address": "Adres BLE",
           "name": "Nazwa",
