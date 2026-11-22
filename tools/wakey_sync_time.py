@@ -401,13 +401,14 @@ def main() -> int:
     parser.add_argument(
         "--settle-seconds",
         type=float,
-        default=1.0,
-        help="Delay after connect before using GATT (default 1)",
+        default=2.0,
+        help="Delay after connect before using GATT (default 2)",
     )
     parser.add_argument(
         "--write-with-response",
-        action="store_true",
-        help="Force GATT write-with-response instead of write command",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Use GATT write-with-response (default: on; more reliable on some BlueZ hosts)",
     )
     parser.add_argument(
         "--dump-gatt",

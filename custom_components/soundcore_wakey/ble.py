@@ -15,7 +15,8 @@ from .protocol import build_time_packet
 _LOGGER = logging.getLogger(__name__)
 
 CONNECT_TIMEOUT = 20.0
-SETTLE_SECONDS = 1.0
+# Empirically more reliable on some BlueZ hosts than 1.0s
+SETTLE_SECONDS = 2.0
 
 
 async def async_sync_time(
@@ -41,7 +42,6 @@ async def async_sync_time(
         hass, address.upper(), connectable=True
     )
     if ble_device is None:
-        # Fallback: address string (works if adapter can resolve it)
         target: str | object = address
         _LOGGER.debug("No BLEDevice from HA scanner for %s, using address string", address)
     else:
@@ -74,17 +74,11 @@ async def async_sync_time(
 
         await asyncio.sleep(SETTLE_SECONDS)
 
-        # Prefer write-without-response when available
-        response = True
-        try:
-            char = client.services.get_characteristic(WRITE_CHAR_UUID)
-            if char is not None and "write-without-response" in char.properties:
-                response = False
-        except Exception:  # noqa: BLE001
-            response = False
-
-        await client.write_gatt_char(WRITE_CHAR_UUID, packet, response=response)
-        _LOGGER.info("Wakey time write completed for %s", address)
+        # Always use write-with-response: write-without-response can report
+        # success on BlueZ while the Wakey ignores the payload (seen on HA host).
+        _LOGGER.debug("Writing GATT char %s response=True", WRITE_CHAR_UUID)
+        await client.write_gatt_char(WRITE_CHAR_UUID, packet, response=True)
+        _LOGGER.info("Wakey time write completed for %s (write-with-response)", address)
     finally:
         if client is not None:
             try:
