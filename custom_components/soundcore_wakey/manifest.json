@@ -1,6 +1,6 @@
 {
   "domain": "soundcore_wakey",
-  "name": "Soundcore Wakey",
+  "name": "Soundcore Wakey Time Sync",
   "codeowners": ["@emgrze"],
   "config_flow": true,
   "dependencies": ["bluetooth"],

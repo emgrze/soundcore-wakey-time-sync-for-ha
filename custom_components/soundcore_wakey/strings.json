@@ -2,7 +2,7 @@
   "config": {
     "step": {
       "user": {
-        "title": "Soundcore Wakey",
+        "title": "Soundcore Wakey Time Sync",
         "description": "Enter the BLE address from advertising (e.g. AA:BB:CC:DD:EE:FF). Flag 1 = 24h + sun/moon icon.",
         "data": {
           "address": "BLE address",

@@ -1,4 +1,4 @@
-# Soundcore Wakey for Home Assistant
+# Soundcore Wakey Time Sync for Home Assistant
 
 Sync the clock on an **Anker Soundcore Wakey (A3300)** over BLE from the Home Assistant host — no phone and no official app required.
 
