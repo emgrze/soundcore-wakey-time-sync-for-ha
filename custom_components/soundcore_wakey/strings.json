@@ -3,19 +3,19 @@
     "step": {
       "user": {
         "title": "Soundcore Wakey",
-        "description": "Podaj adres BLE z reklamy (np. AA:BB:CC:DD:EE:FF). Flaga 1 = 24h + ikona sun/moon.",
+        "description": "Enter the BLE address from advertising (e.g. AA:BB:CC:DD:EE:FF). Flag 1 = 24h + sun/moon icon.",
         "data": {
-          "address": "Adres BLE",
-          "name": "Nazwa",
-          "flag": "Flaga wyświetlacza (0=12h, 1=24h+ikona, 24=24h bez ikony)"
+          "address": "BLE address",
+          "name": "Name",
+          "flag": "Display flag (0=12h, 1=24h+icon, 24=24h without icon)"
         }
       }
     },
     "error": {
-      "invalid_mac": "Nieprawidłowy adres MAC"
+      "invalid_mac": "Invalid MAC address"
     },
     "abort": {
-      "already_configured": "To urządzenie jest już skonfigurowane"
+      "already_configured": "This device is already configured"
     }
   }
 }
